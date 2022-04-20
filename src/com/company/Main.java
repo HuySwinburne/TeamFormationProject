@@ -58,7 +58,7 @@ public class Main {
         a[3][6] = 2;    a[6][3] = 2;    a[4][5] = 3;    a[5][4] = 3;
 
         // Test the distance
-        System.out.println("\nDistance from 4 to 1");
+        System.out.println("\nDistance from 4");
         Dijkstra.findBestPath(n, a, 4, 1);
         System.out.println("\nDistance from 4 to 2");
         Dijkstra.findBestPath(n, a, 4, 2);
