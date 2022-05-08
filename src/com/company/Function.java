@@ -115,7 +115,7 @@ public class Function {
             } else count++;
         }
 
-        // Let agent to handle the task if having enough required resources
+        // Let agent handle the task if having enough required resources
         if(count == 3) {
             return false;
         }
