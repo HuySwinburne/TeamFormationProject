@@ -32,4 +32,11 @@ public class Task {
         }
         return total;
     }
+
+    @Override
+    public String toString(){
+        return "Task{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

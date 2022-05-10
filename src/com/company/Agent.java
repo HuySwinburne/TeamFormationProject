@@ -36,4 +36,11 @@ public class Agent {
     public int getTotalConnection(){
         return connection.length;
     }
+
+    @Override
+    public String toString() {
+        return "Agent{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }
