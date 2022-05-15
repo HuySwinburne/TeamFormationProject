@@ -20,6 +20,16 @@ public class Main {
     static Task task_1 = new Task(new int[]{1, 1, 2}, "task 1");
     static Task task_2 = new Task(new int[]{2, 2, 3}, "task 2");
 
+    // Social Network
+    public static final int[][] mapConnection = {{-1,-1,-1,-1,-1,-1,-1}
+            ,{-1,-1,2,4,2,-1,-1}
+            ,{-1,2,-1,3,-1,-1,-1}
+            ,{-1,4,3,-1,6,2,2}
+            ,{-1,2,-1,6,-1,3,-1}
+            ,{-1,-1,-1,2,3,-1,-1}
+            ,{-1,-1,-1,2,-1,-1,-1}
+    };
+
     public static void main(String[] args) {
 
 
@@ -29,7 +39,7 @@ public class Main {
         managerList.put(task_2, agent_4);
 
         // Generate Initial Population
-        FunctionGA.randomTeam(2,agentContractors,managerList);
+        FunctionGA.select(FunctionGA.initPopulation(2,agentContractors,managerList));
 
     }
 }

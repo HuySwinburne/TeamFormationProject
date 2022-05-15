@@ -33,10 +33,6 @@ public class Agent {
         return total;
     }
 
-    public int getTotalConnection(){
-        return connection.length;
-    }
-
     @Override
     public String toString() {
         return "Agent{" +
