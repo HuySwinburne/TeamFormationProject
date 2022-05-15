@@ -37,23 +37,22 @@ public class OtherFunctions {
     }
 
     public static void exchangeItem(int n, Team team1, Team team2) {
-        List<Agent> lstAgent1 = team1.getLstAgent();
-        int team1Size = lstAgent1.size();
-        List<Agent> lstAgent2 = team2.getLstAgent();
-        int team2Size = lstAgent2.size();
+        List<Agent> lstTeam1 = team1.getLstAgent();
+        int team1Size = lstTeam1.size();
+        List<Agent> lstTeam2 = team2.getLstAgent();
+        int team2Size = lstTeam2.size();
         int minSize = Math.min(team1Size, team2Size);
         if (n <= minSize - 1) {
             while (n != 0) {
                 team1Size--;
                 team2Size--;
-                Agent temp = lstAgent1.get(team1Size);
-                lstAgent1.remove(team1Size);
-                lstAgent1.add(team1Size, lstAgent2.get(team2Size));
-                lstAgent2.remove(team2Size);
-                lstAgent2.add(team2Size, temp);
+                Agent temp = lstTeam1.get(team1Size);
+                lstTeam1.remove(team1Size);
+                lstTeam1.add(team1Size, lstTeam2.get(team2Size));
+                lstTeam2.remove(team2Size);
+                lstTeam2.add(team2Size, temp);
                 n--;
             }
         }
-
     }
 }

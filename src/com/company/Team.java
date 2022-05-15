@@ -50,7 +50,7 @@ public class Team implements Comparable<Team>{
         return cValue;
     }
 
-    private  boolean checkDoneTask() {
+    public  boolean checkDoneTask() {
         for(int i = 0; i < task.getResource().length ; i++) {
             int totalResTeam = 0;
             for(Agent agent : lstAgent)

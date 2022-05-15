@@ -3,6 +3,9 @@ package com.company;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
+import static com.company.FunctionGA.*;
 
 public class Main {
 
@@ -17,8 +20,8 @@ public class Main {
 
 
     // List of tasks
-    static Task task_1 = new Task(new int[]{1, 1, 2}, "task 1");
-    static Task task_2 = new Task(new int[]{2, 2, 3}, "task 2");
+    static Task task_1 = new Task(new int[]{4, 2, 4}, "task 1");
+    static Task task_2 = new Task(new int[]{3, 3, 3}, "task 2");
 
     // Social Network
     public static final int[][] mapConnection = {{-1,-1,-1,-1,-1,-1,-1}
@@ -30,6 +33,8 @@ public class Main {
             ,{-1,-1,-1,2,-1,-1,-1}
     };
 
+    public static final int p = 5;
+
     public static void main(String[] args) {
 
 
@@ -38,8 +43,20 @@ public class Main {
         managerList.put(task_1, agent_3);
         managerList.put(task_2, agent_4);
 
-        // Generate Initial Population
-        FunctionGA.select(FunctionGA.initPopulation(2,agentContractors,managerList));
+        List<Team> population = initPopulation(2, agentContractors, managerList);
+        System.out.println("\npopulation :" + population);
+        for (int i = 0; i < 10; i++) {
+            Team teamSelected = select(population);
+            System.out.println("\npopulation :" + population);
+
+            int random = ThreadLocalRandom.current().nextInt(0, 10);
+            if (random > p) {
+                mutationRemoveAgent(teamSelected);
+            } else {
+                mutationAddAgent(2, teamSelected);
+            }
+            System.out.println("\npopulation Gen " + i +" test : " + population);
+        }
 
     }
 }
