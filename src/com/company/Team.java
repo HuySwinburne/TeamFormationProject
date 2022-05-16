@@ -63,9 +63,9 @@ public class Team implements Comparable<Team>{
     @Override
     public String toString() {
         return "Team{" +
-                "lstAgent=" + lstAgent +
-                ", uValue=" + getUValue() +
-                ", cValue=" + getCValue() +
+                "List=" + lstAgent +
+                ", U=" + getUValue() +
+                ", C=" + getCValue() +
                 ", fitness=" + getFitness() +
                 '}';
     }

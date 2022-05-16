@@ -35,8 +35,6 @@ public class Agent {
 
     @Override
     public String toString() {
-        return "Agent{" +
-                "name='" + name + '\'' +
-                '}';
+        return name;
     }
 }

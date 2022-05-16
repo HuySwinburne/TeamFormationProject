@@ -6,18 +6,18 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.company.FunctionGA.*;
+import static com.company.OtherFunctions.countTotalFitness;
 
 public class Main {
 
     // List of agents
     static Agent agent_1 = new Agent(new int[]{2, 1, 1}, new int[]{-1, 2, 4, 2, -1, -1}, "agent 1", 1);
-    static Agent agent_2 = new Agent(new int[]{2, 1, 1}, new int[]{2, -1, 3, -1, -1}, "agent 2", 2);
+    static Agent agent_2 = new Agent(new int[]{2, 1, 3}, new int[]{2, -1, 3, -1, -1}, "agent 2", 2);
     static Agent agent_3 = new Agent(new int[]{2, 1, 1}, new int[]{4, 3, -1, -1, 2, 2}, "agent 3", 3);
     static Agent agent_4 = new Agent(new int[]{2, 1, 1}, new int[]{2, -1, 6, -1, 3, -1}, "agent 4", 4);
-    static Agent agent_5 = new Agent(new int[]{1, 0, 2}, new int[]{-1, -1, 2, 3, -1, -1}, "agent 5", 5);
+    static Agent agent_5 = new Agent(new int[]{1, 1, 2}, new int[]{-1, -1, 2, 3, -1, -1}, "agent 5", 5);
     static Agent agent_6 = new Agent(new int[]{2, 1, 2}, new int[]{-1, -1, 2, -1, -1, -1}, "agent 6", 6);
     static List<Agent> agentContractors = new ArrayList<>(List.of(new Agent[]{agent_1, agent_2, agent_5, agent_6}));
-
 
     // List of tasks
     static Task task_1 = new Task(new int[]{4, 2, 4}, "task 1");
@@ -36,8 +36,6 @@ public class Main {
     public static final int p = 5;
 
     public static void main(String[] args) {
-
-
         // Add tasks to solve
         HashMap<Task, Agent> managerList = new HashMap<>();
         managerList.put(task_1, agent_3);
@@ -45,7 +43,7 @@ public class Main {
 
         List<Team> population = initPopulation(2, agentContractors, managerList);
         System.out.println("\npopulation :" + population);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i < 10; i++) {
             Team teamSelected = select(population);
             System.out.println("\npopulation :" + population);
 
@@ -53,10 +51,9 @@ public class Main {
             if (random > p) {
                 mutationRemoveAgent(teamSelected);
             } else {
-                mutationAddAgent(2, teamSelected);
+                mutationAddAgent(3, teamSelected);
             }
-            System.out.println("\npopulation Gen " + i +" test : " + population);
+            System.out.println("\npopulation Gen " + i +": " + population + " has total fitness " + countTotalFitness(population));
         }
-
     }
 }
