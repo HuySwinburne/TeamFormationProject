@@ -1,12 +1,11 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static com.company.FunctionGA.*;
-import static com.company.OtherFunctions.countTotalFitness;
 
 public class Main {
 
@@ -23,6 +22,8 @@ public class Main {
     static Task task_1 = new Task(new int[]{4, 2, 4}, "task 1");
     static Task task_2 = new Task(new int[]{3, 3, 3}, "task 2");
     static List<Task> taskList = new ArrayList<>(List.of(new Task[]{task_1, task_2}));
+    static HashMap<Task, Agent> managerList = new HashMap<>();
+    static List<Chromosome> result = new ArrayList<>();
 
     // Social Network
     public static final int[][] mapConnection = {{-1,-1,-1,-1,-1,-1,-1}
@@ -34,15 +35,36 @@ public class Main {
             ,{-1,-1,-1,2,-1,-1,-1}
     };
 
-    public static final int p = 5;
-
     public static void main(String[] args) {
-        // Add tasks to solve
-        HashMap<Task, Agent> managerList = new HashMap<>();
         managerList.put(task_1, agent_3);
         managerList.put(task_2, agent_4);
+        List<Chromosome> chromosomeList = initPopulation(3);
+        List<Chromosome> matingPool = new ArrayList<>();
+//        System.out.println(chromosomeList);
+        System.out.println("Initial Population");
+        System.out.println("Chromosome with highest fitness score: \n");
+        Collections.sort(chromosomeList);
+        System.out.println(chromosomeList.get(0));
 
-        List<Chromosome> population = initPopulation(3, managerList);
-        System.out.println("\npopulation :" + population);
+//        Chromosome[] selectChromosome = select(chromosomeList);
+//        System.out.println(crossOver(selectChromosome));
+
+        // Generate new population in the mating pool
+        do {
+            Chromosome[] selectChromosomes = select(chromosomeList);
+            matingPool.addAll(crossOver(selectChromosomes));
+        }
+        while (matingPool.size() < (populationSize - 1));
+
+//        System.out.println(matingPool);
+
+        List<Chromosome> newPopulation = new ArrayList<>();
+        newPopulation.addAll(chromosomeList);
+        newPopulation.addAll(matingPool);
+        Collections.sort(newPopulation);
+
+        System.out.println("New generation");
+        System.out.println("Chromosome with highest fitness score: \n");
+        System.out.println(newPopulation.get(0));
     }
 }

@@ -1,77 +1,70 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.company.Main.managerList;
+import static com.company.Main.taskList;
+
 public class OtherFunctions {
-    public static List<Agent> getRandomElement(List<Agent> list, int numberOfItems) {
+
+    // Generate initial population at random
+    public static List<Team> genChromosome(List<Task> lstTask, List<Agent> agentList, int max) {
         Random rand = new Random();
-
-        // create a temporary list for storing selected element
-        List<Agent> newList = new ArrayList<>();
-        for (int i = 0; i < numberOfItems; i++) {
-            // case size of list < totalItem then return new list
-            if (list.size() < numberOfItems) {
-                newList.addAll(list);
-                list.clear();
-                break;
-            }
-            // take a random index between 0 to size of given List
-            int randomIndex = rand.nextInt(list.size());
-
-            // add element in temporary list
-            newList.add(list.get(randomIndex));
-
-            // Remove selected element from original list
-            list.remove(list.get(randomIndex));
-        }
-        return newList;
-    }
-
-    public static int getRandomIndexInList(List<Team> teamList) {
-        if (teamList.size() - 1 > 1) {
-            return ThreadLocalRandom.current().nextInt(1, teamList.size() - 1);
-        } else return 1;
-    }
-
-    public static void crossover(int n, Team team1, Team team2) {
-        int totalFitness = team1.getFitness() + team2.getFitness();
-        List<Agent> lstAgent1 = team1.getLstAgent();
-        List<Agent> lstAgent2 = team2.getLstAgent();
-        int team1Size = lstAgent1.size();
-        int team2Size = lstAgent2.size();
-        int minSize = Math.min(team1Size, team2Size);
-        if (n <= minSize - 1) {
-            exchange(n, lstAgent1, lstAgent2);
-            if (team1.getFitness() + team2.getFitness() < totalFitness) {
-                exchange(n, lstAgent1, lstAgent2);
+        List<Task> taskChromosomeList = new ArrayList<>();
+        List<Task> tempTaskList1 = new ArrayList<>(lstTask);
+        List<Task> tempTaskList2 = new ArrayList<>();
+        for (int i = 0; i < agentList.size(); i++) {
+            if (i < lstTask.size()) {
+                int randomIndex = rand.nextInt(tempTaskList1.size());
+                Task taskSelected = tempTaskList1.get(randomIndex);
+                taskChromosomeList.add(taskSelected);
+                tempTaskList2.add(taskSelected);
+                tempTaskList1.remove(taskSelected);
+            } else {
+                int randomIndex = ThreadLocalRandom.current().nextInt(-1, tempTaskList2.size() - 1);
+                if(randomIndex != -1) {
+                    Task taskSelected = tempTaskList2.get(randomIndex);
+                    int occurrences = Collections.frequency(taskChromosomeList, taskSelected);
+                    if (occurrences == max - 1) {
+                        tempTaskList2.remove(taskSelected);
+                    }
+                    taskChromosomeList.add(taskSelected);
+                } else taskChromosomeList.add(null);
             }
         }
+        Collections.shuffle(taskChromosomeList);
+
+        List<Team> population = new ArrayList<>();
+        for(Task task : managerList.keySet()) {
+            Team team = new Team();
+            List<Agent> teamList = new ArrayList<>();
+            teamList.add(managerList.get(task));
+            for(int i = 0; i< taskChromosomeList.size(); i++) {
+                if(taskChromosomeList.get(i)!= null) {
+                    if (task.getName().equals(taskChromosomeList.get(i).getName())) {
+                        teamList.add(agentList.get(i));
+                    }
+                }
+            }
+            team.setLstAgent(teamList);
+            team.setTask(task);
+            population.add(team);
+        }
+
+        return population;
     }
 
-    public static void exchange(int n, List<Agent> lstAgent1, List<Agent> lstAgent2) {
-        int team1Size = lstAgent1.size();
-        int team2Size = lstAgent2.size();
-        while (n != 0) {
-            team1Size--;
-            team2Size--;
-            Agent temp = lstAgent1.get(team1Size);
-            lstAgent1.remove(team1Size);
-            lstAgent1.add(team1Size, lstAgent2.get(team2Size));
-            lstAgent2.remove(team2Size);
-            lstAgent2.add(team2Size, temp);
-            n--;
+    public static boolean checkInvalidChromosome(HashMap<Agent,Task> chromosome, int max) {
+        for (Task task : taskList) {
+            if (!chromosome.containsValue(task)) {
+//                System.out.println("Not enough task");
+                return false;
+            } else if (Collections.frequency(chromosome.values(), task) > max) {
+//                System.out.println("Number of appearance is over limit");
+                return false;
+            }
         }
-    }
-
-    public static int countTotalFitness(List<Team> population){
-        int totalFitNess = 0;
-        for (Team team :
-                population) {
-            totalFitNess += team.getFitness();
-        }
-        return totalFitNess;
+        return true;
     }
 }
