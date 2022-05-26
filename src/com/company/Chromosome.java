@@ -50,17 +50,13 @@ public class Chromosome implements Comparable<Chromosome> {
     }
 
     public Chromosome() {
+        this.id = FunctionGA.id;
+        FunctionGA.id++;
     }
 
-    public Chromosome(HashMap<Agent, Task> hashMap) {
+    public void setChromosomeInfo(HashMap<Agent, Task> hashMap) {
         List<Team> teamList = new ArrayList<>();
-        List<Task> taskList = new ArrayList<>();
-        for(Agent agent : hashMap.keySet()) {
-            Task task = hashMap.get(agent);
-            if(task != null && !taskList.contains(task)) {
-                taskList.add(task);
-            }
-        }
+        List<Task> taskList = new ArrayList<>(Main.taskList);
 
         if(taskList.size() > 0) {
             for (Task task : taskList) {
@@ -81,8 +77,6 @@ public class Chromosome implements Comparable<Chromosome> {
                 teamList.add(team);
             }
         }
-        this.id = FunctionGA.id;
-        FunctionGA.id++;
         this.teamList = teamList;
     }
 

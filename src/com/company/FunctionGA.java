@@ -16,9 +16,7 @@ public class FunctionGA {
         do {
             Chromosome chromosome = new Chromosome();
             chromosome.setTeamList(genChromosome(taskList, agentContractorList, max));
-            chromosome.setId(id);
             chromosomeList.add(chromosome);
-            id++;
         } while (id < (populationSize + 1));
         return chromosomeList;
     }
@@ -36,65 +34,90 @@ public class FunctionGA {
             }
         } while (!check);
 
-//        System.out.println(chromosomes[0].getChartChromosome());
-//        System.out.println(chromosomes[1].getChartChromosome());
         return chromosomes;
     }
 
-    public static Chromosome findParentChromosome(List<Chromosome> chromosomeList) {
-        int randomIndex1 = ThreadLocalRandom.current().nextInt(1, chromosomeList.size() - 1);
-        int randomIndex2 = ThreadLocalRandom.current().nextInt(1, chromosomeList.size() - 1);
-        return chromosomeList.get(randomIndex1).getFitness() > chromosomeList.get(randomIndex2).getFitness()
-                ? chromosomeList.get(randomIndex1) : chromosomeList.get(randomIndex2);
+    public static List<Chromosome> crossOver(Chromosome[] chromosomes) {
+        List<Chromosome> chromosomeList = new ArrayList<>();
+        int ProbabilityCrossover = ThreadLocalRandom.current().nextInt(1, 11);
+        if (ProbabilityCrossover < 9) {
+            HashMap<Agent, Task> offSpringHm1 = new HashMap<>(chromosomes[0].getChartChromosome());
+            HashMap<Agent, Task> offSpringHm2 = new HashMap<>(chromosomes[1].getChartChromosome());
+
+            int numberRandom = ThreadLocalRandom.current().nextInt(1, agentContractorList.size());
+
+            // Crossover two offsprings by Hashmap
+            for (int i = agentContractorList.size() - 1; i >= agentContractorList.size() - numberRandom; i--) {
+                Agent agent = agentContractorList.get(i);
+                Task temp = offSpringHm1.get(agent);
+                offSpringHm1.put(agent, offSpringHm2.get(agent));
+                offSpringHm2.put(agent, temp);
+            }
+
+            Chromosome offSpring1 = null;
+            Chromosome offSpring2 = null;
+
+            // Validate the offspring
+            if (checkInvalidChromosome(offSpringHm1, 3)) {
+                offSpring1 = new Chromosome();
+                offSpring1.setChromosomeInfo(offSpringHm1);
+            }
+            if (checkInvalidChromosome(offSpringHm2, 3)) {
+                offSpring2 = new Chromosome();
+                offSpring2.setChromosomeInfo(offSpringHm2);
+            }
+
+            if (offSpring1 != null) {
+                chromosomeList.add(offSpring1);
+            }
+            if (offSpring2 != null) {
+                chromosomeList.add(offSpring2);
+            }
+            if (chromosomeList.size() == 0) {
+                chromosomeList.add(chromosomes[0]);
+                chromosomeList.add(chromosomes[1]);
+            }
+
+            return chromosomeList;
+        }
+        return chromosomeList;
     }
 
-    public static List<Chromosome> crossOver(Chromosome[] chromosomes) {
-        HashMap<Agent, Task> offSpringHm1 = new HashMap<>(chromosomes[0].getChartChromosome());
-        HashMap<Agent, Task> offSpringHm2 = new HashMap<>(chromosomes[1].getChartChromosome());
 
-        int numberRandom = ThreadLocalRandom.current().nextInt(1, agentContractorList.size());
-//        System.out.println(numberRandom);
+    public static List<Chromosome> mutation(List<Chromosome> chromosomeList) {
+        int ProbabilityMutation = ThreadLocalRandom.current().nextInt(1, 11);
+        if (ProbabilityMutation < 3) {
+            int random1 = 0;
+            if (chromosomeList.size() != 1) {
+                random1 = ThreadLocalRandom.current().nextInt(0, chromosomeList.size());
+            }
+            Chromosome chromosome = chromosomeList.get(random1);
+            HashMap<Agent, Task> chart = chromosome.getChartChromosome();
 
-        // Crossover two offsprings by Hashmap
-        for (int i = agentContractorList.size() - 1; i >= agentContractorList.size() - numberRandom; i--) {
-            Agent agent = agentContractorList.get(i);
-            Task temp = offSpringHm1.get(agent);
-            offSpringHm1.put(agent, offSpringHm2.get(agent));
-            offSpringHm2.put(agent, temp);
+            int random2 = ThreadLocalRandom.current().nextInt(0, agentContractorList.size());
+            Agent key = agentContractorList.get(random2);
+            if (chart.get(key) == null) {
+                int random3 = ThreadLocalRandom.current().nextInt(0, taskList.size());
+                Task task = taskList.get(random3);
+                chart.put(key, task);
+            } else {
+                List<Task> taskListCopy = new ArrayList<>(taskList);
+                taskListCopy.remove(chart.get(key));
+                int random4 = ThreadLocalRandom.current().nextInt(-1, taskListCopy.size());
+                if (random4 == -1) {
+                    chart.put(key, null);
+                } else {
+                    chart.put(key, taskListCopy.get(random4));
+                }
+            }
+
+            if (!checkInvalidChromosome(chart, 3)) {
+                chromosomeList.remove(chromosome);
+            } else {
+                chromosome.setChromosomeInfo(chart);
+            }
+            return chromosomeList;
         }
-//        System.out.println(offSpringHm1);
-//        System.out.println(offSpringHm2 + "\n");
-
-        Chromosome offSpring1 = null;
-        Chromosome offSpring2 = null;
-
-        // Validate the offspring
-//        System.out.println("Crossover result:\n");
-        if (checkInvalidChromosome(offSpringHm1, 3)) {
-            offSpring1 = new Chromosome(offSpringHm1);
-//            System.out.println(offSpring1);
-//            System.out.println(offSpring1.getChartChromosome() + "\n");
-        }
-//        else{
-//            System.out.println("Chromosome is not valid\n");
-//        }
-        if (checkInvalidChromosome(offSpringHm2, 3)) {
-            offSpring2 = new Chromosome(offSpringHm2);
-//            System.out.println(offSpring2);
-//            System.out.println(offSpring2.getChartChromosome() + "\n");
-        }
-//        else{
-//            System.out.println("Chromosome is not valid\n");
-//        }
-
-        List<Chromosome> chromosomeList = new ArrayList<>();
-        if (offSpring1 != null) {
-            chromosomeList.add(offSpring1);
-        }
-        if (offSpring2 != null) {
-            chromosomeList.add(offSpring2);
-        }
-
         return chromosomeList;
     }
 }

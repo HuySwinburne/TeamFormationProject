@@ -3,8 +3,7 @@ package com.company;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.company.Main.managerList;
-import static com.company.Main.taskList;
+import static com.company.Main.*;
 
 public class OtherFunctions {
 
@@ -22,7 +21,7 @@ public class OtherFunctions {
                 tempTaskList2.add(taskSelected);
                 tempTaskList1.remove(taskSelected);
             } else {
-                int randomIndex = ThreadLocalRandom.current().nextInt(-1, tempTaskList2.size() - 1);
+                int randomIndex = ThreadLocalRandom.current().nextInt(-1, tempTaskList2.size());
                 if(randomIndex != -1) {
                     Task taskSelected = tempTaskList2.get(randomIndex);
                     int occurrences = Collections.frequency(taskChromosomeList, taskSelected);
@@ -57,14 +56,17 @@ public class OtherFunctions {
 
     public static boolean checkInvalidChromosome(HashMap<Agent,Task> chromosome, int max) {
         for (Task task : taskList) {
-            if (!chromosome.containsValue(task)) {
-//                System.out.println("Not enough task");
-                return false;
-            } else if (Collections.frequency(chromosome.values(), task) > max) {
-//                System.out.println("Number of appearance is over limit");
+            if (Collections.frequency(chromosome.values(), task) > max) {
                 return false;
             }
         }
         return true;
+    }
+
+    public static Chromosome findParentChromosome(List<Chromosome> chromosomeList) {
+        int randomIndex1 = ThreadLocalRandom.current().nextInt(0, chromosomeList.size());
+        int randomIndex2 = ThreadLocalRandom.current().nextInt(0, chromosomeList.size());
+        return chromosomeList.get(randomIndex1).getFitness() > chromosomeList.get(randomIndex2).getFitness()
+                ? chromosomeList.get(randomIndex1) : chromosomeList.get(randomIndex2);
     }
 }

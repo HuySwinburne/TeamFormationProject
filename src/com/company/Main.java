@@ -1,9 +1,6 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static com.company.FunctionGA.*;
 
@@ -40,23 +37,19 @@ public class Main {
         managerList.put(task_2, agent_4);
         List<Chromosome> chromosomeList = initPopulation(3);
         List<Chromosome> matingPool = new ArrayList<>();
-//        System.out.println(chromosomeList);
         System.out.println("Initial Population");
-        System.out.println("Chromosome with highest fitness score: \n");
+        System.out.println("Chromosome with highest fitness score:");
         Collections.sort(chromosomeList);
         System.out.println(chromosomeList.get(0));
-
-//        Chromosome[] selectChromosome = select(chromosomeList);
-//        System.out.println(crossOver(selectChromosome));
 
         // Generate new population in the mating pool
         do {
             Chromosome[] selectChromosomes = select(chromosomeList);
-            matingPool.addAll(crossOver(selectChromosomes));
+            List<Chromosome> chromosomeListCross = crossOver(selectChromosomes);
+            List<Chromosome> chromosomeListMutation = mutation(chromosomeListCross);
+            matingPool.addAll(chromosomeListMutation);
         }
         while (matingPool.size() < (populationSize - 1));
-
-//        System.out.println(matingPool);
 
         List<Chromosome> newPopulation = new ArrayList<>();
         newPopulation.addAll(chromosomeList);
@@ -64,7 +57,8 @@ public class Main {
         Collections.sort(newPopulation);
 
         System.out.println("New generation");
-        System.out.println("Chromosome with highest fitness score: \n");
+        System.out.println("Chromosome with highest fitness score:");
         System.out.println(newPopulation.get(0));
+
     }
 }
