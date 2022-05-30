@@ -32,6 +32,10 @@ public class Team implements Comparable<Team> {
         return total;
     }
 
+//    public double getFitness() {
+//        return (1-parameter)* getUValue() - parameter*getCValue();
+//    }
+
     public int getFitness() {
         return getUValue() - getCValue();
     }
@@ -47,7 +51,7 @@ public class Team implements Comparable<Team> {
     public int getCValue() {
         int cValue = 0;
         for (int i = 1; i < lstAgent.size(); i++) {
-            cValue += Dijkstra.findBestPath(6, Main.mapConnection, lstAgent.get(0).id, lstAgent.get(i).id);
+            cValue += Dijkstra.findBestPath(15, Main.mapConnection, lstAgent.get(0).id, lstAgent.get(i).id);
         }
         return cValue;
     }

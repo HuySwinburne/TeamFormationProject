@@ -38,8 +38,8 @@ public class FunctionGA {
 
     public static List<Chromosome> crossOver(Chromosome[] chromosomes) {
         List<Chromosome> chromosomeList = new ArrayList<>();
-        int ProbabilityCrossover = ThreadLocalRandom.current().nextInt(0, 10);
-        if (ProbabilityCrossover < 9) {
+        int Probability = ThreadLocalRandom.current().nextInt(0, 10);
+        if (Probability < probabilityCrossover) {
             HashMap<Agent, Task> offSpringHm1 = new HashMap<>(chromosomes[0].getChartChromosome());
             HashMap<Agent, Task> offSpringHm2 = new HashMap<>(chromosomes[1].getChartChromosome());
 
@@ -84,45 +84,49 @@ public class FunctionGA {
     }
 
     public static List<Chromosome> mutation(List<Chromosome> chromosomeList, List<Chromosome> population) {
-        int random1 = 0;
-        if(chromosomeList.size() != 1) {
-            random1 = ThreadLocalRandom.current().nextInt(0, chromosomeList.size());
-        }
-        Chromosome chromosome = chromosomeList.get(random1);
-        HashMap<Agent, Task> chart = new HashMap<>(chromosome.getChartChromosome());
-
-        int random2 = ThreadLocalRandom.current().nextInt(0, agentContractorList.size());
-        Agent key = agentContractorList.get(random2);
-        if (chart.get(key) == null) {
-            int random3 = ThreadLocalRandom.current().nextInt(0, taskList.size());
-            Task task = taskList.get(random3);
-            chart.put(key, task);
-        } else {
-            List<Task> taskListCopy = new ArrayList<>(taskList);
-            taskListCopy.remove(chart.get(key));
-            int random4 = ThreadLocalRandom.current().nextInt(-1, taskListCopy.size());
-            if (random4 == -1) {
-                chart.put(key, null);
-            } else {
-                chart.put(key, taskListCopy.get(random4));
+        int Probability = ThreadLocalRandom.current().nextInt(0, 10);
+        if (Probability < probabilityMutation) {
+            int random1 = 0;
+            if (chromosomeList.size() != 1) {
+                random1 = ThreadLocalRandom.current().nextInt(0, chromosomeList.size());
             }
-        }
+            Chromosome chromosome = chromosomeList.get(random1);
+            HashMap<Agent, Task> chart = new HashMap<>(chromosome.getChartChromosome());
 
-        List<Chromosome> lstMutation = new ArrayList<>();
-        if (checkInvalidChromosome(chart, numberOfAgents)) {
-            if (new HashSet<>(population).containsAll(chromosomeList)) {
-                Chromosome result = new Chromosome();
-                result.setChromosomeInfo(chart);
-                lstMutation.add(result);
+            int random2 = ThreadLocalRandom.current().nextInt(0, agentContractorList.size());
+            Agent key = agentContractorList.get(random2);
+            if (chart.get(key) == null) {
+                int random3 = ThreadLocalRandom.current().nextInt(0, taskList.size());
+                Task task = taskList.get(random3);
+                chart.put(key, task);
             } else {
-                chromosome.setChromosomeInfo(chart);
+                List<Task> taskListCopy = new ArrayList<>(taskList);
+                taskListCopy.remove(chart.get(key));
+                int random4 = ThreadLocalRandom.current().nextInt(-1, taskListCopy.size());
+                if (random4 == -1) {
+                    chart.put(key, null);
+                } else {
+                    chart.put(key, taskListCopy.get(random4));
+                }
+            }
+
+            List<Chromosome> lstMutation = new ArrayList<>();
+            if (checkInvalidChromosome(chart, numberOfAgents)) {
+                if (new HashSet<>(population).containsAll(chromosomeList)) {
+                    Chromosome result = new Chromosome();
+                    result.setChromosomeInfo(chart);
+                    lstMutation.add(result);
+                } else {
+                    chromosome.setChromosomeInfo(chart);
+                    lstMutation.addAll(chromosomeList);
+                }
+            } else if (!new HashSet<>(population).containsAll(chromosomeList)) {
+                chromosomeList.remove(chromosome);
                 lstMutation.addAll(chromosomeList);
             }
-        } else if(!new HashSet<>(population).containsAll(chromosomeList)) {
-            chromosomeList.remove(chromosome);
-            lstMutation.addAll(chromosomeList);
+            return lstMutation;
         }
-        return lstMutation;
+        return chromosomeList;
     }
 
     public static Gen generateGen(int id, List<Chromosome> chromosomeList){
