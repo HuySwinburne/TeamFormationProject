@@ -13,13 +13,12 @@ public class Main {
     static Agent agent_4 = new Agent(new int[]{2, 1, 1}, new int[]{2, -1, 6, -1, 3, -1}, "agent 4", 4);
     static Agent agent_5 = new Agent(new int[]{1, 1, 2}, new int[]{-1, -1, 2, 3, -1, -1}, "agent 5", 5);
     static Agent agent_6 = new Agent(new int[]{2, 1, 2}, new int[]{-1, -1, 2, -1, -1, -1}, "agent 6", 6);
-    static List<Agent> agentContractorList = new ArrayList<>(List.of(new Agent[]{agent_1, agent_2, agent_5, agent_6}));
 
     // List of tasks
     static Task task_1 = new Task(new int[]{4, 2, 4}, "task 1");
     static Task task_2 = new Task(new int[]{3, 3, 3}, "task 2");
+    static List<Agent> agentContractorList = new ArrayList<>(List.of(new Agent[]{agent_1, agent_2, agent_5, agent_6}));
     static List<Task> taskList = new ArrayList<>(List.of(new Task[]{task_1, task_2}));
-    static HashMap<Task, Agent> managerList = new HashMap<>();
     static List<Chromosome> result = new ArrayList<>();
 
     // Social Network
@@ -32,33 +31,29 @@ public class Main {
             ,{-1,-1,-1,2,-1,-1,-1}
     };
 
+    static HashMap<Task, Agent> managerList = new HashMap<>() {{
+        put(task_1, agent_3);
+        put(task_2, agent_4);
+    }};
+
     public static void main(String[] args) {
-        managerList.put(task_1, agent_3);
-        managerList.put(task_2, agent_4);
-        List<Chromosome> chromosomeList = initPopulation(3);
-        List<Chromosome> matingPool = new ArrayList<>();
-        System.out.println("Initial Population");
-        System.out.println("Chromosome with highest fitness score:");
-        Collections.sort(chromosomeList);
-        System.out.println(chromosomeList.get(0));
 
-        // Generate new population in the mating pool
-        do {
-            Chromosome[] selectChromosomes = select(chromosomeList);
-            List<Chromosome> chromosomeListCross = crossOver(selectChromosomes);
-            List<Chromosome> chromosomeListMutation = mutation(chromosomeListCross);
-            matingPool.addAll(chromosomeListMutation);
+        List<Gen> genList = generateGens();
+        List<Chromosome> chromosomeResult = new ArrayList<>();
+        for(Gen gen: genList){
+            chromosomeResult.add(gen.getChromosomeList().get(0));
         }
-        while (matingPool.size() < (populationSize - 1));
 
-        List<Chromosome> newPopulation = new ArrayList<>();
-        newPopulation.addAll(chromosomeList);
-        newPopulation.addAll(matingPool);
-        Collections.sort(newPopulation);
+        System.out.println("Final solution:");
+        Chromosome chromosome = printResult(chromosomeResult);
 
-        System.out.println("New generation");
-        System.out.println("Chromosome with highest fitness score:");
-        System.out.println(newPopulation.get(0));
-
+        if(chromosome!=null) {
+            for (Gen gen : genList) {
+                if (gen.getChromosomeList().get(0) == chromosome) {
+                    System.out.println("This chromosome is in Gen: " + gen.getId());
+                    break;
+                }
+            }
+        }
     }
 }

@@ -4,11 +4,12 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.company.Main.*;
+import static com.company.GAConfig.*;
 
 public class OtherFunctions {
 
     // Generate initial population at random
-    public static List<Team> genChromosome(List<Task> lstTask, List<Agent> agentList, int max) {
+    public static List<Team> genChromosome(List<Task> lstTask, List<Agent> agentList) {
         Random rand = new Random();
         List<Task> taskChromosomeList = new ArrayList<>();
         List<Task> tempTaskList1 = new ArrayList<>(lstTask);
@@ -25,7 +26,7 @@ public class OtherFunctions {
                 if(randomIndex != -1) {
                     Task taskSelected = tempTaskList2.get(randomIndex);
                     int occurrences = Collections.frequency(taskChromosomeList, taskSelected);
-                    if (occurrences == max - 1) {
+                    if (occurrences == numberOfAgents - 1) {
                         tempTaskList2.remove(taskSelected);
                     }
                     taskChromosomeList.add(taskSelected);
@@ -50,7 +51,6 @@ public class OtherFunctions {
             team.setTask(task);
             population.add(team);
         }
-
         return population;
     }
 

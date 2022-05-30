@@ -98,7 +98,7 @@ public class Chromosome implements Comparable<Chromosome> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Chromosome that = (Chromosome) o;
-        return new HashSet<>(teamList).containsAll(that.getTeamList()) && new HashSet<>(that.getTeamList()).containsAll(teamList);
+        return new HashSet<>(teamList).containsAll(that.getTeamList()) && new HashSet<>(that.getTeamList()).containsAll(teamList) && id == that.id;
     }
 
 }

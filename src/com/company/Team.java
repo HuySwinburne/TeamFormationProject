@@ -40,7 +40,7 @@ public class Team implements Comparable<Team> {
         if (checkDoneTask()) {
             return task.getTotalRes();
         } else {
-            return (int) (task.getTotalRes() * (1 / Math.exp(((double) getTotalResOfTeam() / task.getTotalRes()))));
+            return (int) (task.getTotalRes() / Math.exp(((double) task.getTotalRes() / getTotalResOfTeam())));
         }
     }
 
