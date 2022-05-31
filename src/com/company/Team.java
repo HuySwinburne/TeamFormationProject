@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
+import static com.company.GAConfig.*;
+
 public class Team implements Comparable<Team> {
     private Task task;
     private List<Agent> lstAgent;
@@ -32,26 +34,22 @@ public class Team implements Comparable<Team> {
         return total;
     }
 
-//    public double getFitness() {
-//        return (1-parameter)* getUValue() - parameter*getCValue();
-//    }
-
-    public int getFitness() {
-        return getUValue() - getCValue();
+    public double getFitness() {
+        return ((1-parameter)* getUValue() - parameter * getCValue());
     }
 
-    public int getUValue() {
-        if (checkDoneTask()) {
+    public double getUValue() {
+        if(checkDoneTask()) {
             return task.getTotalRes();
         } else {
-            return (int) (task.getTotalRes() / Math.exp(((double) task.getTotalRes() / getTotalResOfTeam())));
+            return (task.getTotalRes() / Math.exp((double) task.getTotalRes()/getTotalResOfTeam()));
         }
     }
 
-    public int getCValue() {
+    public double getCValue() {
         int cValue = 0;
-        for (int i = 1; i < lstAgent.size(); i++) {
-            cValue += Dijkstra.findBestPath(15, Main.mapConnection, lstAgent.get(0).id, lstAgent.get(i).id);
+        for(int i = 1; i< lstAgent.size();i++) {
+            cValue += Dijkstra.findBestPath(15,Main.mapConnection,lstAgent.get(0).id, lstAgent.get(i).id);
         }
         return cValue;
     }
@@ -79,8 +77,8 @@ public class Team implements Comparable<Team> {
 
     @Override
     public int compareTo(Team o) {
-        int fitness = o.getFitness();
-        return this.getFitness() - fitness;
+        double fitness = o.getFitness();
+        return Double.compare(this.getFitness(), fitness);
     }
 
     // Check if 2 selected teams are the same

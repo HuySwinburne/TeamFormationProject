@@ -8,6 +8,6 @@ public class GAConfig {
     public static int probabilityCrossover = 9;     // 0.9
     public static int probabilityMutation = 2;     // 0.2
 
-    //    public static double parameter = 0.5;
+    public static double parameter = 0.5;
 
 }

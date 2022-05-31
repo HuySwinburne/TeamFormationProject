@@ -73,11 +73,11 @@ public class Main {
             chromosomeResult.add(gen.getChromosomeList().get(0));
         }
 
-        System.out.println("Final solution:");
+        System.out.println("\nFinal solution:");
         Chromosome chromosome = printResult(chromosomeResult);
 
-        if(chromosome!=null) {
-            for (Gen gen : genList) {
+        if(chromosome != null) {
+            for (Gen gen: genList) {
                 if (gen.getChromosomeList().get(0) == chromosome) {
                     System.out.println("This chromosome is in Gen: " + gen.getId());
                     break;

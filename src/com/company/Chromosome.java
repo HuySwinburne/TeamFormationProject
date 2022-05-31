@@ -27,10 +27,9 @@ public class Chromosome implements Comparable<Chromosome> {
         this.teamList = teamList;
     }
 
-    public int getFitness(){
-        int total = 0;
-        for (Team t:
-                teamList) {
+    public double getFitness(){
+        double total = 0;
+        for (Team t: teamList) {
             total+= t.getFitness();
         }
         return total;
@@ -89,8 +88,8 @@ public class Chromosome implements Comparable<Chromosome> {
 
     @Override
     public int compareTo(Chromosome o) {
-        int fitness = o.getFitness();
-        return fitness - this.getFitness();
+        double fitness = o.getFitness();
+        return Double.compare(fitness, this.getFitness());
     }
 
     @Override
