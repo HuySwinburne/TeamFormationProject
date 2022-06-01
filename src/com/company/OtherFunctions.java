@@ -10,28 +10,18 @@ public class OtherFunctions {
 
     // Generate initial population at random
     public static List<Team> genChromosome(List<Task> lstTask, List<Agent> agentList) {
-        Random rand = new Random();
         List<Task> taskChromosomeList = new ArrayList<>();
-        List<Task> tempTaskList1 = new ArrayList<>(lstTask);
-        List<Task> tempTaskList2 = new ArrayList<>();
+        List<Task> tempTaskList = new ArrayList<>(lstTask);
         for (int i = 0; i < agentList.size(); i++) {
-            if (i < lstTask.size()) {
-                int randomIndex = rand.nextInt(tempTaskList1.size());
-                Task taskSelected = tempTaskList1.get(randomIndex);
-                taskChromosomeList.add(taskSelected);
-                tempTaskList2.add(taskSelected);
-                tempTaskList1.remove(taskSelected);
-            } else {
-                int randomIndex = ThreadLocalRandom.current().nextInt(-1, tempTaskList2.size());
+            int randomIndex = ThreadLocalRandom.current().nextInt(-1, tempTaskList.size());
                 if(randomIndex != -1) {
-                    Task taskSelected = tempTaskList2.get(randomIndex);
+                    Task taskSelected = tempTaskList.get(randomIndex);
                     int occurrences = Collections.frequency(taskChromosomeList, taskSelected);
                     if (occurrences == numberOfAgents - 1) {
-                        tempTaskList2.remove(taskSelected);
+                        tempTaskList.remove(taskSelected);
                     }
                     taskChromosomeList.add(taskSelected);
                 } else taskChromosomeList.add(null);
-            }
         }
         Collections.shuffle(taskChromosomeList);
 

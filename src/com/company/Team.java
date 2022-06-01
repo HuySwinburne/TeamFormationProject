@@ -49,7 +49,7 @@ public class Team implements Comparable<Team> {
     public double getCValue() {
         int cValue = 0;
         for(int i = 1; i< lstAgent.size();i++) {
-            cValue += Dijkstra.findBestPath(15,Main.mapConnection,lstAgent.get(0).id, lstAgent.get(i).id);
+            cValue += Dijkstra.findBestPath(12,Main.mapConnection,lstAgent.get(0).id, lstAgent.get(i).id);
         }
         return cValue;
     }
