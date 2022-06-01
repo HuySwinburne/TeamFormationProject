@@ -24,6 +24,18 @@ public class Main {
     static Task task_1 = new Task(new int[]{0,7,4,1}, "task 1");
     static Task task_2 = new Task(new int[]{5,0,4,7}, "task 2");
     static Task task_3 = new Task(new int[]{4,4,0,4}, "task 3");
+//    static Task task_1 = new Task(new int[]{0,2,4,4}, "task 1");
+//    static Task task_2 = new Task(new int[]{3,2,4,2}, "task 2");
+//    static Task task_3 = new Task(new int[]{4,5,0,0}, "task 3");
+//    static Task task_1 = new Task(new int[]{0,7,4,5}, "task 1");
+//    static Task task_2 = new Task(new int[]{5,2,4,7}, "task 2");
+//    static Task task_3 = new Task(new int[]{4,4,3,5}, "task 3");
+//    static Task task_1 = new Task(new int[]{0,7,7,5}, "task 1");
+//    static Task task_2 = new Task(new int[]{7,3,4,7}, "task 2");
+//    static Task task_3 = new Task(new int[]{6,3,6,5}, "task 3");
+//    static Task task_1 = new Task(new int[]{0,7,9,5}, "task 1");
+//    static Task task_2 = new Task(new int[]{8,0,7,7}, "task 2");
+//    static Task task_3 = new Task(new int[]{6,4,8,9}, "task 3");
 
     // Social Network
     public static final int[][] mapConnection = {
