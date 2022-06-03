@@ -24,7 +24,6 @@ public class FunctionGA {
     public static Chromosome[] select(List<Chromosome> chromosomeList) {
         Chromosome[] chromosomes = new Chromosome[2];
         Collections.sort(chromosomeList);
-        result.add(chromosomeList.get(0));
         chromosomes[0] = findParentChromosome(chromosomeList);
         boolean check = false;
         do {

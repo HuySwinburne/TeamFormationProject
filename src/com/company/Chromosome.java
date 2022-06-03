@@ -82,7 +82,7 @@ public class Chromosome implements Comparable<Chromosome> {
     @Override
     public String toString() {
         return "Chromosome "+ id + " = " + teamList +
-                " fitness=" + getFitness() +
+                "\n\nFitness score = " + getFitness() +
                 "\n";
     }
 
