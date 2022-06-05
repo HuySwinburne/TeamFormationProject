@@ -14,6 +14,7 @@ public class Main {
     public static int numberAgent;
     public static void main(String[] args) {
 
+        long startTime = System.nanoTime();
         readData();
 
         List<Gen> genList = generateGens();
@@ -33,5 +34,9 @@ public class Main {
                 }
             }
         }
+        long endTime = System.nanoTime();
+        long totalTime = endTime - startTime;
+
+        System.out.println(totalTime*Math.pow(10,-9));
     }
 }
