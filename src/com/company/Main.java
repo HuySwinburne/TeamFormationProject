@@ -14,14 +14,7 @@ public class Main {
     public static int numberAgent;
     public static void main(String[] args) {
 
-        taskList.addAll(readTaskData());
-        agentContractorList.addAll(readAgentData());
-        numberAgent = agentContractorList.size();
-        mapConnection = readMapConnectionData();
-        managerList = readManagerListData();
-        for (Task task : managerList.keySet()) {
-            agentContractorList.remove(managerList.get(task));
-        }
+        readData();
 
         List<Gen> genList = generateGens();
         List<Chromosome> chromosomeResult = new ArrayList<>();

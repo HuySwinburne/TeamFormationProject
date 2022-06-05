@@ -53,6 +53,10 @@ public class Chromosome implements Comparable<Chromosome> {
         FunctionGA.id++;
     }
 
+    public Chromosome(int id) {
+        this.id = id;
+    }
+
     public void setChromosomeInfo(HashMap<Agent, Task> hashMap) {
         List<Team> teamList = new ArrayList<>();
         List<Task> taskList = new ArrayList<>(Main.taskList);
@@ -82,7 +86,7 @@ public class Chromosome implements Comparable<Chromosome> {
     @Override
     public String toString() {
         return "Chromosome "+ id + " = " + teamList +
-                "\n\nFitness score = " + getFitness() +
+                "\n\nFitness Score = " + getFitness() +
                 "\n";
     }
 
@@ -99,5 +103,4 @@ public class Chromosome implements Comparable<Chromosome> {
         Chromosome that = (Chromosome) o;
         return new HashSet<>(teamList).containsAll(that.getTeamList()) && new HashSet<>(that.getTeamList()).containsAll(teamList) && id == that.id;
     }
-
 }

@@ -16,7 +16,7 @@ public class ReadFiles {
         List<Task> taskList = new ArrayList<>();
         Scanner fileScanner = null;
         try {
-            fileScanner = new Scanner(new File("C:\\Users\\bqhuy\\OneDrive\\Desktop\\Folders\\Semester2\\Experiment\\Data\\d6\\taskList.txt"));
+            fileScanner = new Scanner(new File("C:\\Users\\bqhuy\\OneDrive\\Desktop\\Folders\\Semester2\\Experiment\\Data\\b2c2\\taskList.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -45,7 +45,7 @@ public class ReadFiles {
         HashMap<Task, Agent> managerList = new HashMap<>();
         Scanner fileScanner = null;
         try {
-            fileScanner = new Scanner(new File("C:\\Users\\bqhuy\\OneDrive\\Desktop\\Folders\\Semester2\\Experiment\\Data\\d6\\managerList.txt"));
+            fileScanner = new Scanner(new File("C:\\Users\\bqhuy\\OneDrive\\Desktop\\Folders\\Semester2\\Experiment\\Data\\b2c2\\managerList.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -68,7 +68,7 @@ public class ReadFiles {
         List<Agent> agentList = new ArrayList<>();
         Scanner fileScanner = null;
         try {
-            fileScanner = new Scanner(new File("C:\\Users\\bqhuy\\OneDrive\\Desktop\\Folders\\Semester2\\Experiment\\Data\\d6\\agentList.txt"));
+            fileScanner = new Scanner(new File("C:\\Users\\bqhuy\\OneDrive\\Desktop\\Folders\\Semester2\\Experiment\\Data\\b2c2\\agentList.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -97,7 +97,7 @@ public class ReadFiles {
         List<List<Integer>> mapValue = new ArrayList<>();
         Scanner fileScanner = null;
         try {
-            fileScanner = new Scanner(new File("C:\\Users\\bqhuy\\OneDrive\\Desktop\\Folders\\Semester2\\Experiment\\Data\\d6\\mapConnection.txt"));
+            fileScanner = new Scanner(new File("C:\\Users\\bqhuy\\OneDrive\\Desktop\\Folders\\Semester2\\Experiment\\Data\\b2c2\\mapConnection.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -126,4 +126,14 @@ public class ReadFiles {
         return mapArray;
     }
 
+    public static void readData(){
+        taskList.addAll(readTaskData());
+        agentContractorList.addAll(readAgentData());
+        numberAgent = agentContractorList.size();
+        mapConnection = readMapConnectionData();
+        managerList = readManagerListData();
+        for (Task task : managerList.keySet()) {
+            agentContractorList.remove(managerList.get(task));
+        }
+    }
 }
